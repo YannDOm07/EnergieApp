@@ -11,6 +11,7 @@ import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 import LoadingScreen from '@/components/LoadingScreen';
+import { saveUser } from '@/utils/auth'; // à ajuster selon ton chemin
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
@@ -22,18 +23,32 @@ export default function SignUp() {
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSignUp = async () => {
-    try {
-      setIsLoading(true);
-      // Simulate signup
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      router.replace('/(tabs)');
-    } catch (error) {
-      console.error('Error signing up:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  
+
+const handleSignUp = async () => {
+  try {
+    setIsLoading(true);
+    
+    // Simuler un "user"
+    const newUser = {
+      id: Date.now().toString(),
+      companyId: formData.companyId,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      password: formData.password,
+    };
+
+    await saveUser(newUser);
+
+    // Navigation après inscription
+    router.replace('/(tabs)');
+  } catch (error) {
+    console.error('Error signing up:', error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -95,7 +110,7 @@ export default function SignUp() {
             />
             <TextInput
               style={styles.input}
-              placeholder="Identifiant entreprise"
+              placeholder="Email"
               value={formData.companyId}
               onChangeText={(text) =>
                 setFormData({ ...formData, companyId: text })

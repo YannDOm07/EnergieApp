@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { getUser, saveUser, setCurrentUserSession  } from '@/utils/auth';
 import {
   View,
   Text,
@@ -19,22 +20,25 @@ export default function Login() {
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = async () => {
-    try {
-      setIsLoading(true);
-      // Simulate login
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      router.replace('/(tabs)');
-    } catch (error) {
-      console.error('Error logging in:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+ const handleLogin = async () => {
+  setIsLoading(true);
 
-  if (isLoading) {
-    return <LoadingScreen />;
+  const registeredUser = await getUser();
+
+  if (
+    registeredUser &&
+    registeredUser.companyId === companyId &&
+    registeredUser.password === password
+  ) {
+    await setCurrentUserSession(registeredUser);
+    router.replace('/(tabs)');
+  } else {
+    alert("Identifiants incorrects");
   }
+
+  setIsLoading(false);
+};
+
 
   return (
     <LinearGradient
@@ -101,7 +105,7 @@ export default function Login() {
 
         <TouchableOpacity
           style={styles.signupButton}
-          onPress={() => router.push('/(auth)/signup')}
+          onPress={() => router.push('/(auth)')}
         >
           <Text style={styles.signupButtonText}>Créer un compte</Text>
         </TouchableOpacity>

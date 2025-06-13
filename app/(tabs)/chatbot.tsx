@@ -84,11 +84,11 @@ const ChatbotScreen: React.FC = () => {
     };
 
     ws.current.onerror = () => {
-      addMessageToDiscussion('🚫 Erreur de connexion WebSocket');
+      addMessageToDiscussion('');
     };
 
     ws.current.onclose = () => {
-      addMessageToDiscussion('🔌 WebSocket déconnecté');
+      addMessageToDiscussion('Vous êtes hors-ligne');
     };
 
     return () => {

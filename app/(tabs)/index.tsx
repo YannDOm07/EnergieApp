@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useEffect} from 'react';
+import { getUser,  } from '@/utils/auth'; 
 import {
   View,
   Text,
@@ -22,13 +24,32 @@ import MonitoringScreen from '../../components/appareil';
 
 import { Colors } from '../../constants/colors';
 
+useEffect(() => {
+  const fetchUser = async () => {
+    const storedUser = await getUser();
+    setUser(storedUser);
+  };
+
+  fetchUser();
+}, []);
+
 const HomeScreen = () => {
+  const [user, setUser] = useState(null);
   const data = useWebSocketConso();
   const currentConsumption = data?.['Consommation_totale(W)'] || 0;
   const isRealTime = !!data;
 
   const [dailyBudget] = useState(15000); // FCFA
   const [currentSpent, setCurrentSpent] = useState(8750);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const storedUser = await getUser();
+      setUser(storedUser);
+    };
+
+    fetchUser();
+  }, []);
 
   const handleEmergencyCall = () => {
     const cieNumber = '20301010';
@@ -57,8 +78,16 @@ const HomeScreen = () => {
         <View style={styles.header}>
           <View>
             <Text style={styles.greeting}>Bonjour,</Text>
-            <Text style={styles.userName}>Marie Kouassi</Text>
+            {user ? (
+              <Text style={styles.userName}>
+                {user.firstName} {user.lastName}
+              </Text>
+            ) : (
+              <Text style={styles.userName}>Chargement...</Text>
+            )}
           </View>
+
+
           <TouchableOpacity
             style={styles.emergencyButton}
             onPress={handleEmergencyCall}

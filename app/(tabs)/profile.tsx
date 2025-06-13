@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { clearCurrentUserSession } from '@/utils/auth';
 import {
   View,
   Text,
@@ -82,21 +83,11 @@ export default function ProfileScreen() {
     setShowChatbot(false);
   };
 
-  const handleLogout = () => {
-    Alert.alert('Déconnexion', 'Êtes-vous sûr de vouloir vous déconnecter ?', [
-      {
-        text: 'Annuler',
-        style: 'cancel',
-      },
-      {
-        text: 'Déconnexion',
-        style: 'destructive',
-        onPress: () => {
-          // Logique de déconnexion
-        },
-      },
-    ]);
-  };
+  const handleLogout = async () => {
+  await clearCurrentUserSession();
+  router.replace('/(auth)/login'); // Redirige vers l'écran de connexion
+};
+
 
   if (showChatbot) {
     return (
