@@ -1,28 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useWebSocketConso } from '../../hooks/useWebSocketConso'; // Assure-toi que ce chemin est correct
 import { Zap, TrendingUp, TrendingDown, CircleAlert as AlertCircle, Target, Phone } from 'lucide-react-native';
 
 export default function HomeScreen() {
-  const [currentConsumption, setCurrentConsumption] = useState(2.4);
+  const data = useWebSocketConso();
+  const currentConsumption = data?.['Consommation_totale(W)'] || 0;
+  const isRealTime = !!data;
+
   const [dailyBudget] = useState(15000); // FCFA
   const [currentSpent, setCurrentSpent] = useState(8750);
-  const [isRealTime, setIsRealTime] = useState(true);
-
-  // Simulate real-time data updates
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (isRealTime) {
-        setCurrentConsumption(prev => Math.max(0.1, prev + (Math.random() - 0.5) * 0.2));
-        setCurrentSpent(prev => prev + Math.random() * 50);
-      }
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [isRealTime]);
 
   const handleEmergencyCall = () => {
-    const cieNumber = '20301010'; // CIE emergency number
+    const cieNumber = '20301010';
     if (Platform.OS !== 'web') {
       Linking.openURL(`tel:${cieNumber}`);
     } else {
@@ -60,10 +51,12 @@ export default function HomeScreen() {
               </Text>
             </View>
           </View>
+          <Text style={styles.consumptionValue2}>Votre consommation :</Text>
+          <Text style={styles.consumptionValue}>{(currentConsumption / 1000).toFixed(2)} kWh</Text>
           
-          <Text style={styles.consumptionValue}>{currentConsumption.toFixed(1)}</Text>
-          <Text style={styles.consumptionUnit}>kWh actuellement</Text>
-          
+
+
+
           <View style={styles.consumptionDetails}>
             <View style={styles.detailItem}>
               <TrendingUp size={16} color="#10B981" strokeWidth={2} />
@@ -79,23 +72,27 @@ export default function HomeScreen() {
         {/* Budget Progress Card */}
         <View style={styles.budgetCard}>
           <Text style={styles.cardTitle}>Budget Journalier</Text>
-          
+
           <View style={styles.budgetHeader}>
             <Text style={styles.budgetAmount}>{currentSpent.toLocaleString()} FCFA</Text>
             <Text style={styles.budgetTotal}>/ {dailyBudget.toLocaleString()} FCFA</Text>
           </View>
-          
+
           <View style={styles.progressBarContainer}>
             <View style={styles.progressBarBackground}>
-              <View 
+              <View
                 style={[
-                  styles.progressBarFill, 
-                  { 
+                  styles.progressBarFill,
+                  {
                     width: `${Math.min(budgetPercentage, 100)}%`,
-                    backgroundColor: consumptionStatus === 'danger' ? '#DC2626' : 
-                                   consumptionStatus === 'warning' ? '#EA580C' : '#10B981'
-                  }
-                ]} 
+                    backgroundColor:
+                      consumptionStatus === 'danger'
+                        ? '#DC2626'
+                        : consumptionStatus === 'warning'
+                        ? '#EA580C'
+                        : '#10B981',
+                  },
+                ]}
               />
             </View>
             <Text style={styles.progressText}>{budgetPercentage.toFixed(0)}%</Text>
@@ -121,7 +118,7 @@ export default function HomeScreen() {
               <Text style={styles.statTrendText}>-8%</Text>
             </View>
           </View>
-          
+
           <View style={styles.statCard}>
             <Text style={styles.statValue}>42,350</Text>
             <Text style={styles.statLabel}>FCFA économisés</Text>
@@ -135,7 +132,7 @@ export default function HomeScreen() {
         {/* Smart Recommendations */}
         <View style={styles.recommendationsCard}>
           <Text style={styles.cardTitle}>Recommandations IA</Text>
-          
+
           <View style={styles.recommendation}>
             <View style={styles.recommendationIcon}>
               <Zap size={16} color="#2563EB" strokeWidth={2} />
@@ -147,7 +144,7 @@ export default function HomeScreen() {
               <Text style={styles.recommendationSavings}>Économie: 2,500 FCFA/semaine</Text>
             </View>
           </View>
-          
+
           <View style={styles.recommendation}>
             <View style={styles.recommendationIcon}>
               <Target size={16} color="#059669" strokeWidth={2} />
@@ -164,7 +161,7 @@ export default function HomeScreen() {
         {/* Recent Activity */}
         <View style={styles.activityCard}>
           <Text style={styles.cardTitle}>Activité Récente</Text>
-          
+
           <View style={styles.activityItem}>
             <View style={styles.activityTime}>
               <Text style={styles.activityTimeText}>14:30</Text>
@@ -177,7 +174,7 @@ export default function HomeScreen() {
               <Text style={[styles.activityStatusText, { color: '#92400E' }]}>Résolu</Text>
             </View>
           </View>
-          
+
           <View style={styles.activityItem}>
             <View style={styles.activityTime}>
               <Text style={styles.activityTimeText}>12:15</Text>
@@ -277,6 +274,12 @@ const styles = StyleSheet.create({
   },
   consumptionValue: {
     fontSize: 48,
+    color: '#1E293B',
+    fontWeight: '800',
+    lineHeight: 56,
+  },
+  consumptionValue2: {
+    fontSize: 15,
     color: '#1E293B',
     fontWeight: '800',
     lineHeight: 56,

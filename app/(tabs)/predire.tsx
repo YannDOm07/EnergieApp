@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 
-const API_URL = 'http://192.168.1.62:5000/predict'; // Remplace par l'IP locale de ton PC
+const API_URL = 'http://192.168.43.247:5000/predict'; // Remplace par l'IP locale de ton PC
 
 const PredictionScreen: React.FC = () => {
   const [prediction, setPrediction] = useState<number | null>(null);

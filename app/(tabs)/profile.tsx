@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 import { User, Settings, MessageCircle, Bell, Shield, CreditCard, CircleHelp as HelpCircle, LogOut, CreditCard as Edit, Target, Zap } from 'lucide-react-native';
 
 export default function ProfileScreen() {
+   const router = useRouter();
   const [darkMode, setDarkMode] = useState(false);
   const [notifications, setNotifications] = useState(true);
   const [voiceAssistant, setVoiceAssistant] = useState(true);
@@ -159,25 +161,25 @@ export default function ProfileScreen() {
         </View>
 
         {/* Chatbot Card */}
-        <TouchableOpacity
-          style={styles.chatbotCard}
-          onPress={() => setShowChatbot(true)}
-        >
-          <View style={styles.chatbotPreview}>
-            <View style={styles.chatbotIcon}>
-              <MessageCircle size={24} color="#2563EB" strokeWidth={2} />
-            </View>
-            <View style={styles.chatbotTextPreview}>
-              <Text style={styles.chatbotPreviewTitle}>Assistant IA EnergieSmart</Text>
-              <Text style={styles.chatbotPreviewDescription}>
-                Posez vos questions sur votre consommation d'énergie
-              </Text>
-            </View>
-          </View>
-          <View style={styles.chatbotBadge}>
-            <Text style={styles.chatbotBadgeText}>IA</Text>
-          </View>
-        </TouchableOpacity>
+         <TouchableOpacity
+      style={styles.chatbotCard}
+      onPress={() => router.push('/chatbot')}
+    >
+      <View style={styles.chatbotPreview}>
+        <View style={styles.chatbotIcon}>
+          <MessageCircle size={24} color="#2563EB" strokeWidth={2} />
+        </View>
+        <View style={styles.chatbotTextPreview}>
+          <Text style={styles.chatbotPreviewTitle}>Assistant IA EnergieSmart</Text>
+          <Text style={styles.chatbotPreviewDescription}>
+            Posez vos questions sur votre consommation d'énergie
+          </Text>
+        </View>
+      </View>
+      <View style={styles.chatbotBadge}>
+        <Text style={styles.chatbotBadgeText}>IA</Text>
+      </View>
+    </TouchableOpacity>
 
         {/* Settings */}
         <View style={styles.settingsCard}>

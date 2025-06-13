@@ -38,10 +38,10 @@ const ChatbotScreen: React.FC = () => {
   const ws = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-    ws.current = new WebSocket('ws://192.168.1.71:8765');
+    ws.current = new WebSocket('ws://192.168.43.254:8765');
 
     ws.current.onopen = () => {
-      addMessageToDiscussion('🟢 Connecté au serveur WebSocket');
+      addMessageToDiscussion('🟢');
     };
 
     ws.current.onmessage = (event) => {
