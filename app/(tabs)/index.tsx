@@ -18,6 +18,8 @@ import {
   Target,
   Phone,
 } from 'lucide-react-native';
+import MonitoringScreen from '../../components/appareil';
+
 import { Colors } from '../../constants/colors';
 
 const HomeScreen = () => {
@@ -85,8 +87,10 @@ const HomeScreen = () => {
           </View>
           <Text style={styles.consumptionValue2}>Votre consommation :</Text>
           <Text style={styles.consumptionValue}>
-            {(currentConsumption / 1000).toFixed(2)} kWh
+            {(currentConsumption / 1000 * 5 / 3600).toFixed(4)} kWh
           </Text>
+          <MonitoringScreen/>
+
 
           <View style={styles.consumptionDetails}>
             <View style={styles.detailItem}>

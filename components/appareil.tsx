@@ -21,7 +21,7 @@ export default function MonitoringScreen() {
         .map(([name, power]) => (
           <Text key={name} style={styles.deviceItem}>
             {name} :{' '}
-            <Text style={styles.value}>{(power / 1000).toFixed(3)} kWh</Text>
+            <Text style={styles.value}>{(power / 1000 * 5 / 3600).toFixed(4)} kWh</Text>
           </Text>
         ))}
     </ScrollView>
