@@ -65,7 +65,7 @@ export default function Login() {
           />
           <TextInput
             style={styles.input}
-            placeholder="Identifiant entreprise"
+            placeholder="Email"
             value={companyId}
             onChangeText={setCompanyId}
             placeholderTextColor="#666"
