@@ -1,24 +1,79 @@
 import { Tabs } from 'expo-router';
-import { Chrome as Home, ChartBar as BarChart3, TriangleAlert as AlertTriangle, FileText, User, Phone } from 'lucide-react-native';
-import { View, StyleSheet } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Colors } from '../../constants/colors';
+import { View, StyleSheet, Platform, Animated, Easing } from 'react-native';
+import { Phone } from 'lucide-react-native';
+import { useEffect, useRef } from 'react';
 
 export default function TabLayout() {
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    const pulse = Animated.sequence([
+      Animated.timing(pulseAnim, {
+        toValue: 1.1,
+        duration: 1000,
+        easing: Easing.inOut(Easing.ease),
+        useNativeDriver: true,
+      }),
+      Animated.timing(pulseAnim, {
+        toValue: 1,
+        duration: 1000,
+        easing: Easing.inOut(Easing.ease),
+        useNativeDriver: true,
+      }),
+    ]);
+
+    Animated.loop(pulse).start();
+  }, []);
+
   return (
     <>
       <Tabs
         screenOptions={{
           headerShown: false,
-          tabBarStyle: styles.tabBar,
-          tabBarActiveTintColor: '#2563EB',
-          tabBarInactiveTintColor: '#64748B',
-          tabBarLabelStyle: styles.tabLabel,
-        }}>
+          tabBarStyle: {
+            backgroundColor: Colors.background,
+            borderTopColor: Colors.border,
+            borderTopWidth: 0,
+            paddingBottom: Platform.OS === 'ios' ? 24 : 12,
+            paddingTop: 12,
+            height: Platform.OS === 'ios' ? 85 : 70,
+            shadowColor: Colors.shadow,
+            shadowOffset: {
+              width: 0,
+              height: -2,
+            },
+            shadowOpacity: 0.1,
+            shadowRadius: 8,
+            elevation: 8,
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+          },
+          tabBarActiveTintColor: Colors.primary,
+          tabBarInactiveTintColor: Colors.textSecondary,
+          tabBarShowLabel: true,
+          tabBarLabelStyle: {
+            fontSize: 11,
+            fontWeight: '600',
+            paddingBottom: Platform.OS === 'ios' ? 0 : 4,
+          },
+          tabBarIconStyle: {
+            marginTop: 4,
+          },
+          tabBarItemStyle: {
+            paddingTop: 8,
+          },
+        }}
+      >
         <Tabs.Screen
           name="index"
           options={{
             title: 'Accueil',
-            tabBarIcon: ({ size, color }) => (
-              <Home size={size} color={color} strokeWidth={2} />
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="home" size={28} color={color} />
             ),
           }}
         />
@@ -26,26 +81,12 @@ export default function TabLayout() {
           name="analytics"
           options={{
             title: 'Analyses',
-            tabBarIcon: ({ size, color }) => (
-              <BarChart3 size={size} color={color} strokeWidth={2} />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="alerts"
-          options={{
-            title: 'Alertes',
-            tabBarIcon: ({ size, color }) => (
-              <AlertTriangle size={size} color={color} strokeWidth={2} />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="reports"
-          options={{
-            title: 'Signaler',
-            tabBarIcon: ({ size, color }) => (
-              <FileText size={size} color={color} strokeWidth={2} />
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="chart-line"
+                size={28}
+                color={color}
+              />
             ),
           }}
         />
@@ -53,17 +94,12 @@ export default function TabLayout() {
           name="profile"
           options={{
             title: 'Profil',
-            tabBarIcon: ({ size, color }) => (
-              <User size={size} color={color} strokeWidth={2} />
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="account" size={28} color={color} />
             ),
           }}
         />
       </Tabs>
-      
-      {/* Floating CIE Call Button */}
-      <View style={styles.floatingButton}>
-        <Phone size={24} color="#FFFFFF" strokeWidth={2} />
-      </View>
     </>
   );
 }
@@ -97,7 +133,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#DC2626',
+    backgroundColor: '#FF0000',
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',

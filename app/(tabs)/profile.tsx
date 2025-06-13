@@ -1,15 +1,40 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Switch,
+  Alert,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { User, Settings, MessageCircle, Bell, Shield, CreditCard, CircleHelp as HelpCircle, LogOut, CreditCard as Edit, Target, Zap } from 'lucide-react-native';
+import {
+  User,
+  Settings,
+  MessageCircle,
+  Bell,
+  Shield,
+  CreditCard,
+  CircleHelp as HelpCircle,
+  LogOut,
+  CreditCard as Edit,
+  Target,
+  Zap,
+  AlertTriangle,
+} from 'lucide-react-native';
+import { Colors } from '../../constants/colors';
 
 export default function ProfileScreen() {
-   const router = useRouter();
+  const router = useRouter();
   const [darkMode, setDarkMode] = useState(false);
   const [notifications, setNotifications] = useState(true);
   const [voiceAssistant, setVoiceAssistant] = useState(true);
   const [showChatbot, setShowChatbot] = useState(false);
+  const [budgetAlerts, setBudgetAlerts] = useState(true);
+  const [peakAlerts, setPeakAlerts] = useState(true);
+  const [anomalyAlerts, setAnomalyAlerts] = useState(true);
 
   const user = {
     name: 'Marie Kouassi',
@@ -21,33 +46,56 @@ export default function ProfileScreen() {
   };
 
   const stats = [
-    { label: 'kWh économisés ce mois', value: '47.2', icon: Zap, color: '#10B981' },
-    { label: 'Objectifs atteints', value: '23', icon: Target, color: '#2563EB' },
-    { label: 'FCFA économisés', value: '87,450', icon: CreditCard, color: '#F59E0B' },
+    {
+      label: 'kWh économisés ce mois',
+      value: '47.2',
+      icon: Zap,
+      color: '#10B981',
+    },
+    {
+      label: 'Objectifs atteints',
+      value: '23',
+      icon: Target,
+      color: '#2563EB',
+    },
+    {
+      label: 'FCFA économisés',
+      value: '87,450',
+      icon: CreditCard,
+      color: '#F59E0B',
+    },
   ];
 
   const chatbotQuestions = [
-    "Pourquoi ma facture est-elle élevée ce mois ?",
+    'Pourquoi ma facture est-elle élevée ce mois ?',
     "Comment réduire ma consommation d'énergie ?",
-    "Quels sont les appareils qui consomment le plus ?",
-    "Comment programmer mes alertes ?",
-    "Que faire en cas de panne ?",
+    'Quels sont les appareils qui consomment le plus ?',
+    'Comment programmer mes alertes ?',
+    'Que faire en cas de panne ?',
   ];
 
   const handleChatbotQuestion = (question: string) => {
-    Alert.alert('Chatbot IA', `Vous avez demandé: "${question}"\n\nCette fonctionnalité sera bientôt disponible avec notre assistant IA avancé !`);
+    Alert.alert(
+      'Chatbot IA',
+      `Vous avez demandé: "${question}"\n\nCette fonctionnalité sera bientôt disponible avec notre assistant IA avancé !`
+    );
     setShowChatbot(false);
   };
 
   const handleLogout = () => {
-    Alert.alert(
-      'Déconnexion',
-      'Êtes-vous sûr de vouloir vous déconnecter ?',
-      [
-        { text: 'Annuler', style: 'cancel' },
-        { text: 'Déconnexion', style: 'destructive', onPress: () => console.log('Logout') }
-      ]
-    );
+    Alert.alert('Déconnexion', 'Êtes-vous sûr de vouloir vous déconnecter ?', [
+      {
+        text: 'Annuler',
+        style: 'cancel',
+      },
+      {
+        text: 'Déconnexion',
+        style: 'destructive',
+        onPress: () => {
+          // Logique de déconnexion
+        },
+      },
+    ]);
   };
 
   if (showChatbot) {
@@ -60,7 +108,9 @@ export default function ProfileScreen() {
             </View>
             <View style={styles.chatbotInfo}>
               <Text style={styles.chatbotTitle}>Assistant IA EnergieSmart</Text>
-              <Text style={styles.chatbotSubtitle}>Comment puis-je vous aider aujourd'hui ?</Text>
+              <Text style={styles.chatbotSubtitle}>
+                Comment puis-je vous aider aujourd'hui ?
+              </Text>
             </View>
             <TouchableOpacity
               style={styles.closeButton}
@@ -72,8 +122,8 @@ export default function ProfileScreen() {
 
           <ScrollView style={styles.chatbotContent}>
             <Text style={styles.chatbotWelcome}>
-              Bonjour Marie ! Je suis votre assistant IA pour la gestion d'énergie. 
-              Voici quelques questions fréquentes :
+              Bonjour Marie ! Je suis votre assistant IA pour la gestion
+              d'énergie. Voici quelques questions fréquentes :
             </Text>
 
             {chatbotQuestions.map((question, index) => (
@@ -89,10 +139,18 @@ export default function ProfileScreen() {
             <View style={styles.chatbotFeatures}>
               <Text style={styles.featuresTitle}>Je peux aussi :</Text>
               <View style={styles.featuresList}>
-                <Text style={styles.featureItem}>🎤 Répondre à vos questions vocales</Text>
-                <Text style={styles.featureItem}>📊 Analyser votre consommation</Text>
-                <Text style={styles.featureItem}>💡 Donner des conseils personnalisés</Text>
-                <Text style={styles.featureItem}>⚡ Détecter les anomalies</Text>
+                <Text style={styles.featureItem}>
+                  🎤 Répondre à vos questions vocales
+                </Text>
+                <Text style={styles.featureItem}>
+                  📊 Analyser votre consommation
+                </Text>
+                <Text style={styles.featureItem}>
+                  💡 Donner des conseils personnalisés
+                </Text>
+                <Text style={styles.featureItem}>
+                  ⚡ Détecter les anomalies
+                </Text>
               </View>
             </View>
           </ScrollView>
@@ -103,7 +161,10 @@ export default function ProfileScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.title}>Mon Profil</Text>
@@ -130,7 +191,12 @@ export default function ProfileScreen() {
             const IconComponent = stat.icon;
             return (
               <View key={index} style={styles.statCard}>
-                <View style={[styles.statIcon, { backgroundColor: `${stat.color}15` }]}>
+                <View
+                  style={[
+                    styles.statIcon,
+                    { backgroundColor: `${stat.color}15` },
+                  ]}
+                >
                   <IconComponent size={20} color={stat.color} strokeWidth={2} />
                 </View>
                 <Text style={styles.statValue}>{stat.value}</Text>
@@ -143,17 +209,17 @@ export default function ProfileScreen() {
         {/* Account Info */}
         <View style={styles.accountCard}>
           <Text style={styles.cardTitle}>Informations du compte</Text>
-          
+
           <View style={styles.accountItem}>
             <Text style={styles.accountLabel}>Numéro de compte CIE</Text>
             <Text style={styles.accountValue}>{user.accountNumber}</Text>
           </View>
-          
+
           <View style={styles.accountItem}>
             <Text style={styles.accountLabel}>Type d'abonnement</Text>
             <Text style={styles.accountValue}>{user.plan}</Text>
           </View>
-          
+
           <View style={styles.accountItem}>
             <Text style={styles.accountLabel}>Adresse</Text>
             <Text style={styles.accountValue}>{user.address}</Text>
@@ -161,82 +227,160 @@ export default function ProfileScreen() {
         </View>
 
         {/* Chatbot Card */}
-         <TouchableOpacity
-      style={styles.chatbotCard}
-      onPress={() => router.push('/chatbot')}
-    >
-      <View style={styles.chatbotPreview}>
-        <View style={styles.chatbotIcon}>
-          <MessageCircle size={24} color="#2563EB" strokeWidth={2} />
-        </View>
-        <View style={styles.chatbotTextPreview}>
-          <Text style={styles.chatbotPreviewTitle}>Assistant IA EnergieSmart</Text>
-          <Text style={styles.chatbotPreviewDescription}>
-            Posez vos questions sur votre consommation d'énergie
-          </Text>
-        </View>
-      </View>
-      <View style={styles.chatbotBadge}>
-        <Text style={styles.chatbotBadgeText}>IA</Text>
-      </View>
-    </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.chatbotCard}
+          onPress={() => router.push('/chatbot')}
+        >
+          <View style={styles.chatbotPreview}>
+            <View style={styles.chatbotIcon}>
+              <MessageCircle size={24} color="#2563EB" strokeWidth={2} />
+            </View>
+            <View style={styles.chatbotTextPreview}>
+              <Text style={styles.chatbotPreviewTitle}>
+                Assistant IA EnergieSmart
+              </Text>
+              <Text style={styles.chatbotPreviewDescription}>
+                Posez vos questions sur votre consommation d'énergie
+              </Text>
+            </View>
+          </View>
+          <View style={styles.chatbotBadge}>
+            <Text style={styles.chatbotBadgeText}>IA</Text>
+          </View>
+        </TouchableOpacity>
 
-        {/* Settings */}
+        {/* Section Alertes */}
         <View style={styles.settingsCard}>
-          <Text style={styles.cardTitle}>Paramètres</Text>
-          
+          <Text style={styles.sectionTitle}>Alertes</Text>
+
           <View style={styles.settingItem}>
             <View style={styles.settingContent}>
-              <Bell size={20} color="#64748B" strokeWidth={2} />
+              <View
+                style={[styles.settingIcon, { backgroundColor: '#FEE2E2' }]}
+              >
+                <AlertTriangle size={20} color="#DC2626" strokeWidth={2} />
+              </View>
+              <View style={styles.settingInfo}>
+                <Text style={styles.settingTitle}>Alertes de budget</Text>
+                <Text style={styles.settingDescription}>
+                  Notifications lorsque vous approchez de votre limite
+                </Text>
+              </View>
+            </View>
+            <Switch
+              value={budgetAlerts}
+              onValueChange={setBudgetAlerts}
+              trackColor={{ false: Colors.border, true: Colors.primary }}
+              thumbColor={Colors.background}
+            />
+          </View>
+
+          <View style={styles.settingItem}>
+            <View style={styles.settingContent}>
+              <View
+                style={[styles.settingIcon, { backgroundColor: '#FEF3C7' }]}
+              >
+                <Zap size={20} color="#D97706" strokeWidth={2} />
+              </View>
+              <View style={styles.settingInfo}>
+                <Text style={styles.settingTitle}>
+                  Alertes heures de pointe
+                </Text>
+                <Text style={styles.settingDescription}>
+                  Notifications pendant les périodes de forte consommation
+                </Text>
+              </View>
+            </View>
+            <Switch
+              value={peakAlerts}
+              onValueChange={setPeakAlerts}
+              trackColor={{ false: Colors.border, true: Colors.primary }}
+              thumbColor={Colors.background}
+            />
+          </View>
+
+          <View style={styles.settingItem}>
+            <View style={styles.settingContent}>
+              <View
+                style={[styles.settingIcon, { backgroundColor: '#DBEAFE' }]}
+              >
+                <Target size={20} color="#2563EB" strokeWidth={2} />
+              </View>
+              <View style={styles.settingInfo}>
+                <Text style={styles.settingTitle}>Alertes anomalies</Text>
+                <Text style={styles.settingDescription}>
+                  Détection des consommations inhabituelles
+                </Text>
+              </View>
+            </View>
+            <Switch
+              value={anomalyAlerts}
+              onValueChange={setAnomalyAlerts}
+              trackColor={{ false: Colors.border, true: Colors.primary }}
+              thumbColor={Colors.background}
+            />
+          </View>
+        </View>
+
+        {/* Section Paramètres */}
+        <View style={styles.settingsCard}>
+          <Text style={styles.sectionTitle}>Paramètres</Text>
+
+          <View style={styles.settingItem}>
+            <View style={styles.settingContent}>
+              <View
+                style={[styles.settingIcon, { backgroundColor: '#E0E7FF' }]}
+              >
+                <Bell size={20} color="#4F46E5" strokeWidth={2} />
+              </View>
               <View style={styles.settingInfo}>
                 <Text style={styles.settingTitle}>Notifications</Text>
-                <Text style={styles.settingDescription}>Alertes et rappels</Text>
+                <Text style={styles.settingDescription}>
+                  Activer/désactiver toutes les notifications
+                </Text>
               </View>
             </View>
             <Switch
               value={notifications}
               onValueChange={setNotifications}
-              trackColor={{ false: '#E2E8F0', true: '#DBEAFE' }}
-              thumbColor={notifications ? '#2563EB' : '#94A3B8'}
+              trackColor={{ false: Colors.border, true: Colors.primary }}
+              thumbColor={Colors.background}
             />
           </View>
 
           <View style={styles.settingItem}>
             <View style={styles.settingContent}>
-              <MessageCircle size={20} color="#64748B" strokeWidth={2} />
+              <View
+                style={[styles.settingIcon, { backgroundColor: '#F3E8FF' }]}
+              >
+                <MessageCircle size={20} color="#7C3AED" strokeWidth={2} />
+              </View>
               <View style={styles.settingInfo}>
                 <Text style={styles.settingTitle}>Assistant vocal</Text>
-                <Text style={styles.settingDescription}>Reconnaissance vocale</Text>
+                <Text style={styles.settingDescription}>
+                  Contrôle vocal de l'application
+                </Text>
               </View>
             </View>
             <Switch
               value={voiceAssistant}
               onValueChange={setVoiceAssistant}
-              trackColor={{ false: '#E2E8F0', true: '#DBEAFE' }}
-              thumbColor={voiceAssistant ? '#2563EB' : '#94A3B8'}
+              trackColor={{ false: Colors.border, true: Colors.primary }}
+              thumbColor={Colors.background}
             />
           </View>
-        </View>
-
-        {/* Menu Options */}
-        <View style={styles.menuCard}>
-          <TouchableOpacity style={styles.menuItem}>
-            <Settings size={20} color="#64748B" strokeWidth={2} />
-            <Text style={styles.menuText}>Paramètres avancés</Text>
-          </TouchableOpacity>
 
           <TouchableOpacity style={styles.menuItem}>
-            <Target size={20} color="#64748B" strokeWidth={2} />
-            <Text style={styles.menuText}>Objectifs et budgets</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.menuItem}>
-            <Shield size={20} color="#64748B" strokeWidth={2} />
+            <View style={[styles.settingIcon, { backgroundColor: '#ECFDF5' }]}>
+              <Shield size={20} color="#059669" strokeWidth={2} />
+            </View>
             <Text style={styles.menuText}>Confidentialité et sécurité</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.menuItem}>
-            <HelpCircle size={20} color="#64748B" strokeWidth={2} />
+            <View style={[styles.settingIcon, { backgroundColor: '#FEF3C7' }]}>
+              <HelpCircle size={20} color="#D97706" strokeWidth={2} />
+            </View>
             <Text style={styles.menuText}>Aide et support</Text>
           </TouchableOpacity>
         </View>
@@ -250,7 +394,9 @@ export default function ProfileScreen() {
         {/* App Info */}
         <View style={styles.appInfo}>
           <Text style={styles.appInfoText}>EnergieSmart v1.0.0</Text>
-          <Text style={styles.appInfoText}>Développé pour la Côte d'Ivoire</Text>
+          <Text style={styles.appInfoText}>
+            Développé pour la Côte d'Ivoire
+          </Text>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -260,7 +406,7 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: Colors.background,
   },
   scrollView: {
     flex: 1,
@@ -271,28 +417,29 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 24,
+    marginTop: 20,
   },
   title: {
     fontSize: 28,
-    color: '#1E293B',
+    color: Colors.text,
     fontWeight: '800',
   },
   editButton: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#EFF6FF',
+    backgroundColor: `${Colors.primary}15`,
     justifyContent: 'center',
     alignItems: 'center',
   },
   userCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.background,
     borderRadius: 16,
     padding: 24,
     marginBottom: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: Colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
@@ -302,7 +449,7 @@ const styles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 32,
-    backgroundColor: '#EFF6FF',
+    backgroundColor: `${Colors.primary}15`,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
@@ -312,19 +459,19 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontSize: 20,
-    color: '#1E293B',
+    color: Colors.text,
     fontWeight: '700',
     marginBottom: 4,
   },
   userEmail: {
     fontSize: 14,
-    color: '#64748B',
+    color: Colors.textSecondary,
     fontWeight: '500',
     marginBottom: 2,
   },
   userPhone: {
     fontSize: 14,
-    color: '#64748B',
+    color: Colors.textSecondary,
     fontWeight: '500',
   },
   statsContainer: {
@@ -560,6 +707,12 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 4,
   },
+  sectionTitle: {
+    fontSize: 18,
+    color: '#1E293B',
+    fontWeight: '700',
+    marginBottom: 16,
+  },
   settingItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -573,8 +726,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
   },
+  settingIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
   settingInfo: {
-    marginLeft: 12,
     flex: 1,
   },
   settingTitle: {
@@ -587,17 +747,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#64748B',
     fontWeight: '500',
-  },
-  menuCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    padding: 24,
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
   },
   menuItem: {
     flexDirection: 'row',
