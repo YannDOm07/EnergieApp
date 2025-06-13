@@ -114,7 +114,7 @@ const AnalyticsScreen = () => {
   const renderPredictionContent = () => {
     return (
       <Animated.View
-                  style={[
+        style={[
           styles.predictionContainer,
           {
             opacity: fadeAnim,
@@ -162,7 +162,7 @@ const AnalyticsScreen = () => {
               end={{ x: 1, y: 0 }}
             >
               <Animated.View
-                  style={[
+                style={[
                   styles.buttonContent,
                   loading && {
                     transform: [
@@ -301,15 +301,15 @@ const AnalyticsScreen = () => {
               <Text style={styles.infoText}>
                 Prédiction précise pour les 2 prochaines minutes
               </Text>
-        </View>
-      </View>
+            </View>
+          </View>
         </ScrollView>
       </Animated.View>
     );
   };
 
   const renderAnalyticsContent = () => {
-  return (
+    return (
       <ScrollView style={styles.scrollView}>
         <View style={styles.header}>
           <Text style={styles.title}>Analyses</Text>
@@ -323,15 +323,15 @@ const AnalyticsScreen = () => {
         </View>
 
         <View style={styles.periodSelector}>
-            <TouchableOpacity
+          <TouchableOpacity
             style={[styles.periodButton, styles.periodButtonActive]}
           >
             <Text
               style={[styles.periodButtonText, styles.periodButtonTextActive]}
             >
               Jour
-              </Text>
-            </TouchableOpacity>
+            </Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.periodButton}>
             <Text style={styles.periodButtonText}>Semaine</Text>
           </TouchableOpacity>
@@ -344,18 +344,18 @@ const AnalyticsScreen = () => {
         </View>
 
         <View style={styles.viewSelector}>
-              <TouchableOpacity
+          <TouchableOpacity
             style={[styles.viewButton, styles.viewButtonActive]}
           >
             <MaterialCommunityIcons
               name="chart-line"
-                  size={20}
+              size={20}
               color={Colors.textLight}
             />
             <Text style={[styles.viewButtonText, styles.viewButtonTextActive]}>
               Graphique
-                </Text>
-              </TouchableOpacity>
+            </Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.viewButton}>
             <MaterialCommunityIcons
               name="table"
@@ -497,15 +497,15 @@ const AnalyticsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FF6B00',
+    backgroundColor: '#FFFFFF',
   },
   predictionContainer: {
     flex: 1,
-    backgroundColor: 'transparent',
+    backgroundColor: '#FFFFFF',
   },
   tabsContainer: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    backgroundColor: '#FFFFFF',
     paddingHorizontal: 20,
     paddingTop: 10,
     paddingBottom: 10,
@@ -936,20 +936,20 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#333333',
     marginTop: 12,
     textAlign: 'center',
   },
   headerSubtitle: {
     fontSize: 16,
-    color: '#fff',
+    color: '#666666',
     opacity: 0.9,
     marginTop: 8,
     textAlign: 'center',
   },
   title: {
     fontSize: 28,
-    color: Colors.text,
+    color: '#333333',
     fontWeight: '800',
   },
   headerIcon: {
