@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { clearCurrentUserSession } from '@/utils/auth';
+import React, { useEffect, useState } from 'react';
+import { clearCurrentUserSession, getCurrentUserSession, getUser } from '@/utils/auth'; // ✅
 import {
   View,
   Text,
@@ -36,15 +36,17 @@ export default function ProfileScreen() {
   const [budgetAlerts, setBudgetAlerts] = useState(true);
   const [peakAlerts, setPeakAlerts] = useState(true);
   const [anomalyAlerts, setAnomalyAlerts] = useState(true);
+  const [user, setUser] = useState(null)
 
-  const user = {
-    name: 'Marie Kouassi',
-    email: 'marie.kouassi@email.com',
-    phone: '+225 07 12 34 56 78',
-    address: 'Cocody, Angré 8ème Tranche',
-    accountNumber: 'CIE-1234567890',
-    plan: 'Résidentiel Standard',
-  };
+  // ✅ Récupération des infos utilisateur à l'ouverture de l'écran
+  useEffect(() => {
+      const fetchUser = async () => {
+        const storedUser = await getUser();
+        setUser(storedUser);
+      };
+  
+      fetchUser();
+    }, []);
 
   const stats = [
     {
@@ -67,95 +69,16 @@ export default function ProfileScreen() {
     },
   ];
 
-  const chatbotQuestions = [
-    'Pourquoi ma facture est-elle élevée ce mois ?',
-    "Comment réduire ma consommation d'énergie ?",
-    'Quels sont les appareils qui consomment le plus ?',
-    'Comment programmer mes alertes ?',
-    'Que faire en cas de panne ?',
-  ];
-
-  const handleChatbotQuestion = (question: string) => {
-    Alert.alert(
-      'Chatbot IA',
-      `Vous avez demandé: "${question}"\n\nCette fonctionnalité sera bientôt disponible avec notre assistant IA avancé !`
-    );
-    setShowChatbot(false);
+  const handleLogout = async () => {
+    await clearCurrentUserSession();
+    router.replace('/(auth)/login');
   };
 
-  const handleLogout = async () => {
-  await clearCurrentUserSession();
-  router.replace('/(auth)/login'); // Redirige vers l'écran de connexion
-};
-
-
-  if (showChatbot) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.chatbotContainer}>
-          <View style={styles.chatbotHeader}>
-            <View style={styles.chatbotAvatar}>
-              <MessageCircle size={24} color="#FFFFFF" strokeWidth={2} />
-            </View>
-            <View style={styles.chatbotInfo}>
-              <Text style={styles.chatbotTitle}>Assistant IA EnergieSmart</Text>
-              <Text style={styles.chatbotSubtitle}>
-                Comment puis-je vous aider aujourd'hui ?
-              </Text>
-            </View>
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => setShowChatbot(false)}
-            >
-              <Text style={styles.closeButtonText}>✕</Text>
-            </TouchableOpacity>
-          </View>
-
-          <ScrollView style={styles.chatbotContent}>
-            <Text style={styles.chatbotWelcome}>
-              Bonjour Marie ! Je suis votre assistant IA pour la gestion
-              d'énergie. Voici quelques questions fréquentes :
-            </Text>
-
-            {chatbotQuestions.map((question, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.questionButton}
-                onPress={() => handleChatbotQuestion(question)}
-              >
-                <Text style={styles.questionText}>{question}</Text>
-              </TouchableOpacity>
-            ))}
-
-            <View style={styles.chatbotFeatures}>
-              <Text style={styles.featuresTitle}>Je peux aussi :</Text>
-              <View style={styles.featuresList}>
-                <Text style={styles.featureItem}>
-                  🎤 Répondre à vos questions vocales
-                </Text>
-                <Text style={styles.featureItem}>
-                  📊 Analyser votre consommation
-                </Text>
-                <Text style={styles.featureItem}>
-                  💡 Donner des conseils personnalisés
-                </Text>
-                <Text style={styles.featureItem}>
-                  ⚡ Détecter les anomalies
-                </Text>
-              </View>
-            </View>
-          </ScrollView>
-        </View>
-      </SafeAreaView>
-    );
-  }
+  // ...
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView
-        style={styles.scrollView}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.title}>Mon Profil</Text>
@@ -164,15 +87,23 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* User Info Card */}
+        {/* ✅ Carte d'information utilisateur dynamique */}
         <View style={styles.userCard}>
           <View style={styles.userAvatar}>
             <User size={32} color="#2563EB" strokeWidth={2} />
           </View>
           <View style={styles.userInfo}>
-            <Text style={styles.userName}>{user.name}</Text>
-            <Text style={styles.userEmail}>{user.email}</Text>
-            <Text style={styles.userPhone}>{user.phone}</Text>
+           {user ? (
+  <>
+    <Text style={styles.userName}>
+      Nom : {user.firstName} 
+    </Text>
+    <Text style={styles.userName}>Prénom : {user.lastName} </Text>
+    <Text style={styles.userName}>Email : {user.companyId}</Text>
+  </>
+) : (
+  <Text style={styles.userName}>Chargement...</Text>
+)}
           </View>
         </View>
 
@@ -201,19 +132,16 @@ export default function ProfileScreen() {
         <View style={styles.accountCard}>
           <Text style={styles.cardTitle}>Informations du compte</Text>
 
+          
+
           <View style={styles.accountItem}>
-            <Text style={styles.accountLabel}>Numéro de compte CIE</Text>
-            <Text style={styles.accountValue}>{user.accountNumber}</Text>
+            <Text style={styles.accountLabel}>Type d'abonnement : Compteur Intelligent</Text>
+            
           </View>
 
           <View style={styles.accountItem}>
-            <Text style={styles.accountLabel}>Type d'abonnement</Text>
-            <Text style={styles.accountValue}>{user.plan}</Text>
-          </View>
-
-          <View style={styles.accountItem}>
-            <Text style={styles.accountLabel}>Adresse</Text>
-            <Text style={styles.accountValue}>{user.address}</Text>
+            <Text style={styles.accountLabel}>Adresse : Abidjan</Text>
+            
           </View>
         </View>
 
@@ -339,27 +267,7 @@ export default function ProfileScreen() {
             />
           </View>
 
-          <View style={styles.settingItem}>
-            <View style={styles.settingContent}>
-              <View
-                style={[styles.settingIcon, { backgroundColor: '#F3E8FF' }]}
-              >
-                <MessageCircle size={20} color="#7C3AED" strokeWidth={2} />
-              </View>
-              <View style={styles.settingInfo}>
-                <Text style={styles.settingTitle}>Assistant vocal</Text>
-                <Text style={styles.settingDescription}>
-                  Contrôle vocal de l'application
-                </Text>
-              </View>
-            </View>
-            <Switch
-              value={voiceAssistant}
-              onValueChange={setVoiceAssistant}
-              trackColor={{ false: Colors.border, true: Colors.primary }}
-              thumbColor={Colors.background}
-            />
-          </View>
+          
 
           <TouchableOpacity style={styles.menuItem}>
             <View style={[styles.settingIcon, { backgroundColor: '#ECFDF5' }]}>

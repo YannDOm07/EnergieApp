@@ -24,14 +24,7 @@ import MonitoringScreen from '../../components/appareil';
 
 import { Colors } from '../../constants/colors';
 
-useEffect(() => {
-  const fetchUser = async () => {
-    const storedUser = await getUser();
-    setUser(storedUser);
-  };
 
-  fetchUser();
-}, []);
 
 const HomeScreen = () => {
   const [user, setUser] = useState(null);
@@ -122,14 +115,6 @@ const HomeScreen = () => {
 
 
           <View style={styles.consumptionDetails}>
-            <View style={styles.detailItem}>
-              <TrendingUp size={16} color="#10B981" strokeWidth={2} />
-              <Text style={styles.detailText}>+12% vs hier</Text>
-            </View>
-            <View style={styles.detailItem}>
-              <Target size={16} color="#2563EB" strokeWidth={2} />
-              <Text style={styles.detailText}>Objectif: 20 kWh/jour</Text>
-            </View>
           </View>
         </View>
 
