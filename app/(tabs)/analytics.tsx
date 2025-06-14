@@ -212,7 +212,7 @@ const AnalyticsScreen = () => {
                 Consommation prévue dans 2 minutes
               </Text>
               <Text style={styles.predictionValue}>
-                {prediction.toFixed(2)}
+                {prediction.toFixed(4)}
                 <Text style={styles.unit}> kWh</Text>
               </Text>
               {lastUpdate && (

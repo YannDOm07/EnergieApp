@@ -8,7 +8,7 @@ interface ConsumptionPoint {
   timestamp: string;
 }
 
-const WEBSOCKET_URL = 'ws://192.168.1.62:8080';
+const WEBSOCKET_URL = 'ws://192.168.43.254:8765';
 const VISIBLE_COUNT = 7;
 
 export default function GraphiqueScreen() {

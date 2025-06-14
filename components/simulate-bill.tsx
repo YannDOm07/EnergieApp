@@ -6,7 +6,7 @@ interface ConsumptionData {
   timestamp: string;
 }
 
-const WEBSOCKET_URL = 'ws://192.168.1.62:8080'; // À adapter
+const WEBSOCKET_URL = 'ws://192.168.43.254:8765'; // À adapter
 const SimulateBillCard: React.FC = () => {
   const [displayedBill, setDisplayedBill] = useState<string | null>(null);
   const [fixedTimestamp, setFixedTimestamp] = useState<string | null>(null);
