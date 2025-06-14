@@ -99,6 +99,24 @@ export default function TabLayout() {
             ),
           }}
         />
+        <Tabs.Screen
+          name="chatbot"
+          options={{
+            title: 'Chatbot',
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="robot" size={28} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="reports"
+          options={{
+            title: 'Signaler',
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="alert-circle-outline" size={28} color={color} />
+            ),
+          }}
+        />
       </Tabs>
     </>
   );

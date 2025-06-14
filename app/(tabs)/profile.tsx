@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import * as ImagePicker from 'expo-image-picker';
 import { clearCurrentUserSession, getCurrentUserSession, getUser } from '@/utils/auth'; // ✅
 import {
   View,
   Text,
   StyleSheet,
+  Image,
   ScrollView,
   TouchableOpacity,
   Switch,
@@ -26,6 +28,9 @@ import {
   AlertTriangle,
 } from 'lucide-react-native';
 import { Colors } from '../../constants/colors';
+// 🧠 Ajouter en haut du composant
+
+
 
 export default function ProfileScreen() {
   const router = useRouter();
@@ -36,7 +41,30 @@ export default function ProfileScreen() {
   const [budgetAlerts, setBudgetAlerts] = useState(true);
   const [peakAlerts, setPeakAlerts] = useState(true);
   const [anomalyAlerts, setAnomalyAlerts] = useState(true);
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+
+  // 📸 Fonction dans le bon bloc
+  const pickImage = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      Alert.alert("Permission refusée", "L'accès à la galerie est requis.");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.7,
+    });
+
+    if (!result.canceled && result.assets.length > 0) {
+      setProfileImage(result.assets[0].uri);
+    }
+  };
+  
 
   // ✅ Récupération des infos utilisateur à l'ouverture de l'écran
   useEffect(() => {
@@ -82,16 +110,22 @@ export default function ProfileScreen() {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.title}>Mon Profil</Text>
-          <TouchableOpacity style={styles.editButton}>
-            <Edit size={20} color="#2563EB" strokeWidth={2} />
-          </TouchableOpacity>
+          
         </View>
 
         {/* ✅ Carte d'information utilisateur dynamique */}
         <View style={styles.userCard}>
-          <View style={styles.userAvatar}>
-            <User size={32} color="#2563EB" strokeWidth={2} />
-          </View>
+          <TouchableOpacity onPress={pickImage} style={styles.userAvatar}>
+  {profileImage ? (
+    <Image
+      source={{ uri: profileImage }}
+      style={styles.avatarImage}
+    />
+  ) : (
+    <User size={32} color="#2563EB" strokeWidth={2} />
+  )}
+</TouchableOpacity>
+
           <View style={styles.userInfo}>
            {user ? (
   <>
@@ -625,6 +659,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
   },
+  avatarImage: {
+  width: '100%',
+  height: '100%',
+  borderRadius: 32,
+},
   settingIcon: {
     width: 40,
     height: 40,

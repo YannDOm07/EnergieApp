@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Linking,
   TextInput,
   Alert,
   Dimensions,
@@ -328,9 +329,14 @@ export default function ReportsScreen() {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.title}>Signalements CIE</Text>
-          <TouchableOpacity style={styles.emergencyCallButton}>
-            <MaterialCommunityIcons name="phone" size={24} color="#FFFFFF" />
-          </TouchableOpacity>
+          <TouchableOpacity
+  style={styles.emergencyCallButton}
+  onPress={() => {
+    Linking.openURL('tel:20301010');
+  }}
+>
+  <MaterialCommunityIcons name="phone" size={24} color="#FFFFFF" />
+</TouchableOpacity>
         </View>
 
         {/* Quick Report Types */}

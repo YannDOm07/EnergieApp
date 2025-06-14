@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useEffect} from 'react';
 import { getUser,  } from '@/utils/auth'; 
+import SimulateBillScreen from '../../components/simulate-bill'
 import {
   View,
   Text,
@@ -119,50 +120,7 @@ const HomeScreen = () => {
         </View>
 
         {/* Budget Progress Card */}
-        <View style={styles.budgetCard}>
-          <Text style={styles.cardTitle}>Budget Journalier</Text>
-
-          <View style={styles.budgetHeader}>
-            <Text style={styles.budgetAmount}>
-              {currentSpent.toLocaleString()} FCFA
-            </Text>
-            <Text style={styles.budgetTotal}>
-              / {dailyBudget.toLocaleString()} FCFA
-            </Text>
-          </View>
-
-          <View style={styles.progressBarContainer}>
-            <View style={styles.progressBarBackground}>
-              <View
-                style={[
-                  styles.progressBarFill,
-                  {
-                    width: `${Math.min(budgetPercentage, 100)}%`,
-                    backgroundColor:
-                      consumptionStatus === 'danger'
-                        ? '#DC2626'
-                        : consumptionStatus === 'warning'
-                        ? '#EA580C'
-                        : '#10B981',
-                  },
-                ]}
-              />
-            </View>
-            <Text style={styles.progressText}>
-              {budgetPercentage.toFixed(0)}%
-            </Text>
-          </View>
-
-          {budgetPercentage > 80 && (
-            <View style={styles.warningContainer}>
-              <AlertCircle size={16} color="#DC2626" strokeWidth={2} />
-              <Text style={styles.warningText}>
-                Attention ! Vous avez dépassé 80% de votre budget quotidien.
-              </Text>
-            </View>
-          )}
-        </View>
-
+        <SimulateBillScreen/>
         {/* Recommendations */}
         <View style={styles.recommendationsCard}>
           <Text style={styles.cardTitle}>Recommandations IA</Text>

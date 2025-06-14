@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import GraphiqueScreen from '../../components/graphique';
 import {
   View,
   Text,
@@ -332,15 +333,7 @@ const AnalyticsScreen = () => {
               Jour
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.periodButton}>
-            <Text style={styles.periodButtonText}>Semaine</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.periodButton}>
-            <Text style={styles.periodButtonText}>Mois</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.periodButton}>
-            <Text style={styles.periodButtonText}>Année</Text>
-          </TouchableOpacity>
+         
         </View>
 
         <View style={styles.viewSelector}>
@@ -356,22 +349,13 @@ const AnalyticsScreen = () => {
               Graphique
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.viewButton}>
-            <MaterialCommunityIcons
-              name="table"
-              size={20}
-              color={Colors.textSecondary}
-            />
-            <Text style={styles.viewButtonText}>Tableau</Text>
-          </TouchableOpacity>
+          
         </View>
 
         <View style={styles.contentCard}>
           <Text style={styles.cardTitle}>Consommation Journalière</Text>
           <View style={styles.graphPlaceholder}>
-            <Text style={styles.placeholderText}>
-              Graphique de consommation
-            </Text>
+            <GraphiqueScreen/>
           </View>
         </View>
 
@@ -810,9 +794,10 @@ const styles = StyleSheet.create({
   periodButton: {
     flex: 1,
     paddingVertical: 12,
-    paddingHorizontal: 16,
+    //paddingHorizontal: 1,
     borderRadius: 8,
     alignItems: 'center',
+    width : 50
   },
   periodButtonActive: {
     backgroundColor: Colors.primary,
